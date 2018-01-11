@@ -17,9 +17,9 @@ Sequence::Sequence(int bIndex, int seqIndex, std::string cigar_seq, std::string 
 
 void Sequence::extractSequences(std::string pathToAlignments) {
 
-    std::string saveDirectory = "sparc/sequence_alignments";
+    std::string saveDirectory = "sequence_alignments";
 
-    const int dir_err = system("mkdir -p sparc/sequence_alignments");
+    const int dir_err = system("mkdir -p sequence_alignments");
     if (-1 == dir_err)
     {
         printf("Error creating directory!n");
