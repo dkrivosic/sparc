@@ -1,6 +1,9 @@
 #include <iostream>
 #include "Sequence.h"
 #include "backbone.h"
+#include "KmerGraph.h"
+#include "Node.h"
+#include "Edge.h"
 
 int main()
 {

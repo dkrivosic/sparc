@@ -8,6 +8,6 @@ class Edge
     public:
         std::string transition;
         float weight;
-        Node endNode;
-        Edge(std::string, Node);
+        Node *endNode;
+        Edge(std::string);
 };
