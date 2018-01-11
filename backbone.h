@@ -6,5 +6,6 @@ class Backbone
         Backbone(std::string);
     public:
         ~Backbone();
-        static Backbone createFromFile(std::string);
+        std::string value;
+        static Backbone* createFromFile(std::string);
 };
