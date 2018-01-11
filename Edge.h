@@ -9,5 +9,5 @@ class Edge
         std::string transition;
         float weight;
         Node endNode;
-        Edge(std::string, Node);
+        Edge(std::string);
 };
