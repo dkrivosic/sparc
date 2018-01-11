@@ -12,8 +12,7 @@ KmerGraph::KmerGraph(Backbone *backbone, int k, int g)
 {
     this->k = k;
     this->g = g;
-    // initializeGraph(backbone->value);
-    initializeGraph("AAAGTGAC");
+    initializeGraph(backbone->value);
 }
 
 KmerGraph::~KmerGraph()
@@ -37,6 +36,10 @@ void KmerGraph::initializeGraph(std::string backbone)
         {
             e->endNode = n;
         }
+        else
+        {
+            initialNode = n;
+        }
 
         i += k;
         if (i >= len)
@@ -47,14 +50,14 @@ void KmerGraph::initializeGraph(std::string backbone)
         std::string transition = backbone.substr(i, g);
         e = new Edge(transition);
         
-        std::vector<Edge> neighbours;
-        neighbours.push_back(*e);
+        std::vector<Edge*> neighbours;
+        neighbours.push_back(e);
         _graph[*n] = neighbours;
         i += (g - k);
     }
 }
 
-std::map<Node, std::vector<Edge> > KmerGraph::getGraph()
+std::map<Node, std::vector<Edge*> > KmerGraph::getGraph()
 {
     return _graph;
 }
