@@ -5,6 +5,8 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <iterator>
+#include <typeinfo>
 
 Sequence::Sequence(int bIndex, int seqIndex, std::string cigar_seq, std::string seq) {
     backboneIndex = bIndex;
@@ -13,33 +15,49 @@ Sequence::Sequence(int bIndex, int seqIndex, std::string cigar_seq, std::string 
     sequence = seq;
 }
 
-void Sequence::extractSequences() {
-    // create folder for sequence files 
-    std::string folder = "/home/luka/Workspaces/C++/sparc/sequence_alignments";
+void Sequence::extractSequences(std::string pathToAlignments) {
 
-    const int dir_err = system("mkdir -p /home/luka/Workspaces/C++/sparc/sequence_alignments");
+    std::string saveDirectory = "sparc/sequence_alignments";
+
+    const int dir_err = system("mkdir -p sparc/sequence_alignments");
     if (-1 == dir_err)
     {
         printf("Error creating directory!n");
         exit(1);
     }
     
+    std::cout << "Saving reads to folder: '" + saveDirectory + "'"<< std::endl;
+
     // open alignments SAM file created GraphMap with CIGAR syntax
     std::string line;
-    std::ifstream alignmentsFile("/home/luka/Workspaces/C++/sparc/consenus_input/lambda_alignments_cigar_1.sam");
-    // alignmentsFile.open ("/home/luka/Workspaces/C++/sparc/consenus_input/lambda_alignments_cigar.sam");
+    std::ifstream alignmentsFile(pathToAlignments);
 
     if (alignmentsFile.is_open()){
-        std::vector<std::string> tokens;
-        std::stringstream stringToInt;
-        int backboneIndexInt;
+        std::istringstream iss;
+        std::stringstream ss;
         int a;
         std::string b;
+        int backboneIndexInt;
         int sequenceIndexInt;
         std::string cigarSequence;
         std::string sequence;
-        while (alignmentsFile >> sequenceIndexInt >> a >> b >> backboneIndexInt >> a >> cigarSequence >> b >> a >> a >> sequence >> b >> b >> b >> b >> b >> b >> b >> b >> b){
-            Sequence::saveToFile(folder, sequenceIndexInt, backboneIndexInt,cigarSequence, sequence);
+
+        for(int i = 0; i < 3; i++){
+            getline(alignmentsFile, line);
+        }
+
+        while(getline(alignmentsFile, line)){
+            // getline(alignmentsFile, line);
+            iss.str(line);
+            std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+                                 std::istream_iterator<std::string>());
+
+            sequenceIndexInt = stoi(results[0]);
+            backboneIndexInt = stoi(results[3]);
+            cigarSequence = results[5];
+            sequence = results[9];
+            Sequence::saveToFile(saveDirectory, sequenceIndexInt, backboneIndexInt,cigarSequence, sequence);
+            iss.clear();
         }
     } else {
         std::cout << "File is not opened. Exiting...";
@@ -51,10 +69,6 @@ void Sequence::extractSequences() {
 }
 
 void Sequence::saveToFile(std::string saveLocation, int sequenceIndexInt, int backboneIndexInt,std::string cigarSequence, std::string sequence){
-    /*std::string Result;
-    std::ostringstream convert;
-    convert << sequenceIndexInt;
-    Result = convert.str();*/
     std::string filePath = saveLocation + "/" + static_cast<std::ostringstream*>( &(std::ostringstream() << sequenceIndexInt) )->str() + ".txt";
     std::ofstream ofsSaveSequence(filePath.c_str());
     if (ofsSaveSequence.is_open()){

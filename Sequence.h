@@ -10,7 +10,7 @@ class Sequence
         Sequence(int, int, std::string, std::string);
 
     public:
-        static void extractSequences();
+        static void extractSequences(std::string);
  
         int getBackboneIndex()          {return backboneIndex;}
         int getSequenceIndex()          {return sequenceIndex;}
