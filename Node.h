@@ -1,10 +1,12 @@
-#include "kmer.h"
+#pragma once
 #include <string>
 
-class KmerNode
+class Node
 {
     public:
-        Kmer kmer;
-        std::string link;
-        int weight;
+        int backboneIndex;
+        std::string kmer;
+        Node(int, std::string);
+        bool operator==(const Node&) const;
+        bool operator<(const Node&) const;
 };
