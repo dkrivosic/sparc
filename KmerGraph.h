@@ -11,6 +11,7 @@ class KmerGraph
     private:
         void initializeGraph(std::string);
         std::map<Node, std::vector<Edge> > _graph;
+        int k, g;
     public:
         KmerGraph(Backbone, int, int);
         ~KmerGraph();
