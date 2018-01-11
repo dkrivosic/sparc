@@ -22,8 +22,7 @@ Backbone* Backbone::createFromFile(std::string filename)
 
 Backbone::Backbone(std::string value)
 {
-    std::cout<<value;
-
+    this->value = value;
 }
 
 
