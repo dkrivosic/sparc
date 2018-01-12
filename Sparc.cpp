@@ -7,7 +7,7 @@
 
 int main()
 {
-    std::string pathToAlignments = "consenus_input/lambda_alignments_cigar.sam"; // path to location folder of the alignments.sam file
+    std::string pathToAlignments = "consensus_input/lambda_alignments_cigar.sam"; // path to location folder of the alignments.sam file
     std::cout << "Extracting sequences started from file: '" + pathToAlignments + "'"<< std::endl;
     Sequence::extractSequences(pathToAlignments);
     std::cout << "\nFinished! Exiting..." << std::endl;
