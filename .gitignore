@@ -2,4 +2,6 @@ generate_alignments
 sparc
 .vscode
 consenus_input
+consensus_input/
 main
+.DS_Store
