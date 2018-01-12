@@ -11,7 +11,7 @@ int main()
     std::cout << "Extracting sequences started from file: '" + pathToAlignments + "'"<< std::endl;
     Sequence::extractSequences(pathToAlignments);
     std::cout << "\nFinished! Exiting..." << std::endl;
-    Backbone* bb = Backbone::createFromFile("consenus_input/lambda_layout.fasta");
+    Backbone* bb = Backbone::createFromFile("consensus_input/lambda_layout.fasta");
     std::cout << bb->value;
     return 0;
 }
