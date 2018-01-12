@@ -15,7 +15,8 @@ Sequence::Sequence(int bIndex, int seqIndex, std::string cigar_seq, std::string 
     sequence = seq;
 }
 
-void Sequence::extractSequences(std::string pathToAlignments) {
+void Sequence::extractSequences(std::string pathToAlignments)
+{
 
     std::string saveDirectory = "sequence_alignments";
 
@@ -32,7 +33,8 @@ void Sequence::extractSequences(std::string pathToAlignments) {
     std::string line;
     std::ifstream alignmentsFile(pathToAlignments);
 
-    if (alignmentsFile.is_open()){
+    if (alignmentsFile.is_open())
+    {
         std::istringstream iss;
         std::stringstream ss;
         int a;
@@ -42,11 +44,13 @@ void Sequence::extractSequences(std::string pathToAlignments) {
         std::string cigarSequence;
         std::string sequence;
 
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < 3; i++)
+        {
             getline(alignmentsFile, line);
         }
 
-        while(getline(alignmentsFile, line)){
+        while(getline(alignmentsFile, line))
+        {
             // getline(alignmentsFile, line);
             iss.str(line);
             std::vector<std::string> results(std::istream_iterator<std::string>{iss},
@@ -59,7 +63,9 @@ void Sequence::extractSequences(std::string pathToAlignments) {
             Sequence::saveToFile(saveDirectory, sequenceIndexInt, backboneIndexInt,cigarSequence, sequence);
             iss.clear();
         }
-    } else {
+    }
+    else
+    {
         std::cout << "File is not opened. Exiting...";
         exit(1);
     }
@@ -68,8 +74,9 @@ void Sequence::extractSequences(std::string pathToAlignments) {
     alignmentsFile.close();
 }
 
-void Sequence::saveToFile(std::string saveLocation, int sequenceIndexInt, int backboneIndexInt,std::string cigarSequence, std::string sequence){
-    std::string filePath = saveLocation + "/" + static_cast<std::ostringstream*>( &(std::ostringstream() << sequenceIndexInt) )->str() + ".txt";
+void Sequence::saveToFile(std::string saveLocation, int sequenceIndexInt, int backboneIndexInt,std::string cigarSequence, std::string sequence)
+{
+    std::string filePath = saveLocation + "/" + std::to_string(sequenceIndexInt) + ".txt";
     std::ofstream ofsSaveSequence(filePath.c_str());
     if (ofsSaveSequence.is_open()){
         ofsSaveSequence << sequenceIndexInt << " " << backboneIndexInt << " " << cigarSequence << " " << sequence;
@@ -77,13 +84,15 @@ void Sequence::saveToFile(std::string saveLocation, int sequenceIndexInt, int ba
     ofsSaveSequence.close();
 }
 
-Sequence* Sequence::loadFromFile(std::string loadPath){
+Sequence* Sequence::loadFromFile(std::string loadPath)
+{
     std::ifstream ifsLoadSequence(loadPath.c_str());
     int backboneIndex;
     int sequenceIndex;
     std::string cigarSequence;
     std::string sequence;
-    if (ifsLoadSequence.is_open()){
+    if (ifsLoadSequence.is_open())
+    {
         ifsLoadSequence >> backboneIndex >> sequenceIndex >> cigarSequence >> sequence;
         ifsLoadSequence.close();
     }
