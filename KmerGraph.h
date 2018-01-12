@@ -17,7 +17,7 @@ class KmerGraph
         ~KmerGraph();
         void addSequence(Sequence);
         std::map<Node, std::vector<Edge*> > getGraph();
-        Node initialNode;
+        Node *initialNode;
 
 
 };

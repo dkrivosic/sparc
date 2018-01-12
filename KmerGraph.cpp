@@ -12,6 +12,7 @@ KmerGraph::KmerGraph(Backbone *backbone, int k, int g)
 {
     this->k = k;
     this->g = g;
+    this->initialNode = nullptr;
     initializeGraph(backbone->value);
 }
 
@@ -60,4 +61,9 @@ void KmerGraph::initializeGraph(std::string backbone)
 std::map<Node, std::vector<Edge*> > KmerGraph::getGraph()
 {
     return _graph;
+}
+
+void KmerGraph::addSequence(Sequence s)
+{
+
 }
