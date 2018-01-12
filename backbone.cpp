@@ -7,7 +7,7 @@ Backbone* Backbone::createFromFile(std::string filename)
     std::ifstream inFile;
     inFile.open(filename);
     if (!inFile) {
-        std::cout << "Unable to open file datafile.txt"<<std::endl;
+        std::cout << "Unable to open file " << filename << std::endl;
         exit(1);
     }
     std::string temp;
