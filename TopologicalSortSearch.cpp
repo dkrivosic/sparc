@@ -9,11 +9,11 @@ TopologicalSortSearch::TopologicalSortSearch(std::vector<std::vector<std::pair<i
 
 std::string TopologicalSortSearch::run()
 {
-    // reverse();
-    // reverse();
+    reverse();
     std::vector<int> sorted = sort();
 
     int numberOfVertices = graph.size();
+
     for(int i=0; i<numberOfVertices; i++) {
         int vertex = sorted[i];
         std::cout << vertex << ' ';
@@ -30,15 +30,15 @@ void TopologicalSortSearch::reverse()
     reversed.insert(reversed.begin(), numberOfVertices, vi);
     for(int i=0; i<numberOfVertices; i++) {
         int numberOfNeighbours = graph[i].size();
-        // std::cout<<"V:"<<i << ' '<<endl;
+        // std::cout<<"V: "<<i << ' '<<std::endl;
         for(int j=0; j<numberOfNeighbours; j++) {
             std::pair<int, int> node = graph[i][j];
-            // std::cout<<p.first << ' ';
+            // std::cout<<node.first << ' ';
             int vertex = node.first;
             int weight = node.second;
             reversed[vertex].push_back(std::make_pair(i, weight));  
         }
-        // std::std::cout<<endl;
+        // std::cout<<std::endl;
     }
     this->graph = reversed;
 }
@@ -51,18 +51,18 @@ void TopologicalSortSearch::put(int vertex)
     called[vertex] = true;
     int numberOfNeighbours = graph[vertex].size();
 
-    std::cout<< "V : "<< vertex <<std::endl;
+    // std::cout<< "V : "<< vertex <<std::endl;
 
     for(int i=0; i<numberOfNeighbours; i++) {
         std::pair<int, int> node = graph[vertex][i];
         int neighbour = node.first;
-        std::cout<< "N : "<< vertex <<std::endl;
+        // std::cout<< "N : "<< vertex <<std::endl;
         if(!visited[neighbour]) {
             put(neighbour);
         }
     }
-    std::cout<<std::endl;
-    std::cout<< "A : "<< vertex <<std::endl;
+    // std::cout<<std::endl;
+    // std::cout<< "A : "<< vertex <<std::endl;
     sorted.push_back(vertex);
     called[vertex] = false;
     visited[vertex] = true;
