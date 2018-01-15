@@ -16,7 +16,7 @@ class TopologicalSortSearch
     private :
         void reverse();
         void put(Node node);
-        std::pair<std::string, int> search(std::vector<int>);
+        std::pair<std::string, int> search(std::vector<Node>);
         std::vector<Node> sort();
         std::vector<Node> sorted;
         std::map <Node, bool> visited;
