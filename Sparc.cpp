@@ -44,7 +44,7 @@ int main()
     Backbone* bb = Backbone::createFromFile("consensus_input/lambda_layout.fasta");
     KmerGraph *graph = new KmerGraph(bb, 2, 3);
 
-    Sequence *sequence = Sequence::loadFromFile("/Users/domagoj/programiranje/sparc/sequence_alignments/5.txt");
+    Sequence *sequence = Sequence::loadFromFile("sequence_alignments/5.txt");
     std::cout << bb->value.substr(sequence->getBackboneIndex() - 1).substr(0, 100) << std::endl;
     graph->addSequence(sequence);
 
