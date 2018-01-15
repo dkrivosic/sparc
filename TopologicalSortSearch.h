@@ -2,6 +2,9 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "Node.h"
+#include "Edge.h"
+
 
 class TopologicalSortSearch
 {
@@ -9,6 +12,7 @@ class TopologicalSortSearch
         std::vector<std::vector<std::pair<int, int> > > graph;
         TopologicalSortSearch(std::vector<std::vector<std::pair<int, int> > >);
         std::pair<std::string, int>  run();
+        static std::map<Node, std::vector<Edge*> > createGraph();
     private :
         void reverse();
         void put(int vertex);
