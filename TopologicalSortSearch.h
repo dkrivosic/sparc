@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <map>
 
 class TopologicalSortSearch
 {
@@ -10,4 +11,9 @@ class TopologicalSortSearch
         std::string run();
     private :
         void reverse();
+        void put(int vertex);
+        std::vector<int> sort();
+        std::vector<int> sorted;
+        std::map <int, bool> visited;
+        std::map<int, bool> called;
 };
