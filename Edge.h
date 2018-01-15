@@ -11,4 +11,6 @@ class Edge
         Node *endNode;
         Edge(std::string);
         Edge(std::string, Node*);
+        bool operator==(const Edge&) const;
+        bool operator<(const Edge&) const;
 };

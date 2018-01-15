@@ -12,3 +12,17 @@ Edge::Edge(std::string transition, Node* endNode)
     this->weight = 1.0;
     this->endNode = endNode;
 }
+
+bool Edge::operator==(const Edge& e) const
+{
+    return this->transition == e.transition && this->endNode == e.endNode;
+}
+
+bool Edge::operator<(const Edge& e) const
+{
+    if (this->transition == e.transition)
+    {
+        return this->endNode < e.endNode;
+    }
+    return this->transition < e.transition;
+}
