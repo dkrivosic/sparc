@@ -8,7 +8,7 @@
 #include <vector>
 
 
-TopologicalSortSearch::TopologicalSortSearch(std::vector<std::vector<std::pair<int, int> > > graph)
+TopologicalSortSearch::TopologicalSortSearch(std::map<Node, std::vector<Edge*> > graph)
 {
     this->graph = graph;
 }
@@ -48,7 +48,6 @@ std::map<Node, std::vector<Edge*> > TopologicalSortSearch::createGraph()
     Edge *e4 = new Edge("4");
     e4->endNode = n3;
     e4->weight = 1.0;
-
     Edge *e5 = new Edge("5");
     e5->endNode = n8;
     e5->weight = 2.0;
@@ -90,55 +89,57 @@ std::map<Node, std::vector<Edge*> > TopologicalSortSearch::createGraph()
     e17->weight = 1.0;
     
     std::vector<Edge*> adjacent;
-    adjacent.push_back(e6);
-    adjacent.push_back(e8);
-    adjacent.push_back(e3);
+    adjacent.push_back(e16);
     graph[*n0] = adjacent;
     adjacent.clear();
 
+    adjacent.push_back(e2);
+    adjacent.push_back(e3);
     graph[*n1] = adjacent;
     adjacent.clear();
 
-    adjacent.push_back(e1);
+    adjacent.push_back(e7);
+    adjacent.push_back(e9);
     graph[*n2] = adjacent;
     adjacent.clear();
 
-    adjacent.push_back(e4);
+    adjacent.push_back(e12);
     graph[*n3] = adjacent;
     adjacent.clear();
 
-    adjacent.push_back(e0);
+    adjacent.push_back(e5);
+    adjacent.push_back(e6);
     graph[*n4] = adjacent;
     adjacent.clear();
 
-    adjacent.push_back(e3);
-    adjacent.push_back(e12);
+    adjacent.push_back(e13);
+    adjacent.push_back(e14);
+    adjacent.push_back(e15);
     graph[*n5] = adjacent;
     adjacent.clear();
 
-    adjacent.push_back(e2);
+    adjacent.push_back(e8);
+    adjacent.push_back(e10);
+    adjacent.push_back(e11);
     graph[*n6] = adjacent;
     adjacent.clear();
 
+    adjacent.push_back(e0);
+    adjacent.push_back(e1);
     graph[*n7] = adjacent;
     adjacent.clear();
 
-    adjacent.push_back(e5);
-    adjacent.push_back(e7);
-    adjacent.push_back(e8);
     graph[*n8] = adjacent;
     adjacent.clear();
 
+    adjacent.push_back(e4);
     graph[*n9] = adjacent;
     adjacent.clear();
 
-    adjacent.push_back(e16);
-    adjacent.push_back(e10);
-    adjacent.push_back(e14);
+    adjacent.push_back(e17);
     graph[*n10] = adjacent;
     adjacent.clear();
 
-    adjacent.push_back(e17);
     graph[*n11] = adjacent;
     adjacent.clear();
 
@@ -148,45 +149,51 @@ std::map<Node, std::vector<Edge*> > TopologicalSortSearch::createGraph()
 
 std::pair<std::string, int> TopologicalSortSearch::run()
 {
+    reverse();
+    std::cout<<"-----------------------------------------------------"<<std::endl;
+    reverse();
+    std::cout<<"-----------------------------------------------------"<<std::endl;
+    reverse();
     // reverse();
-    std::vector<int> sorted = sort();
+    // std::vector<int> sorted = sort();
 
-    int numberOfVertices = graph.size();
+    // int numberOfVertices = graph.size();
 
-    for(int i=0; i<numberOfVertices; i++) {
-        int vertex = sorted[i];
+    // for(int i=0; i<numberOfVertices; i++) {
+    //     int vertex = sorted[i];
         // std::cout << vertex << ' ';
-    }
-    return search(sorted);
+    // }
+    // return search(sorted);
+    return std::make_pair("aaa", 0);
 }
 
-std::pair<std::string, int> TopologicalSortSearch::search(std::vector<int> sorted) {
-    int numberOfVertices = graph.size();
-    int last = sorted[numberOfVertices-1];
-    std::vector<int> distances(numberOfVertices, -1);
-    distances[last] = 0;
-    std::vector<int> path(numberOfVertices, -1);
+// std::pair<std::string, int> TopologicalSortSearch::search(std::vector<int> sorted) {
+    // int numberOfVertices = graph.size();
+    // int last = sorted[numberOfVertices-1];
+    // std::vector<int> distances(numberOfVertices, -1);
+    // distances[last] = 0;
+    // std::vector<int> path(numberOfVertices, -1);
 
     
-    for(int i=numberOfVertices-1; i>=0; i--) {
-        int vertex = sorted[i];
+    // for(int i=numberOfVertices-1; i>=0; i--) {
+    //     int vertex = sorted[i];
         // cout << "start: " << x <<endl;
         // cout << distances[x] <<endl;
-        if(distances[vertex]==-1){
-            continue;
-        }
-        for(int j=0; j<graph[vertex].size(); j++) {
-            std::pair<int, int> node = graph[vertex][j];
-            int neighbour = node.first;
-            int dist = node.second;
+        // if(distances[vertex]==-1){
+        //     continue;
+        // }
+        // for(int j=0; j<graph[vertex].size(); j++) {
+        //     std::pair<int, int> node = graph[vertex][j];
+        //     int neighbour = node.first;
+        //     int dist = node.second;
             // cout << "N :" << vertex <<endl;
             //  cout << "D:" << dist <<endl;
-            if(distances[neighbour] < distances[vertex]+dist) {
-                distances[neighbour] = distances[vertex]+dist;
-                path[neighbour] = vertex;
-            }
-         }    
-    }
+            // if(distances[neighbour] < distances[vertex]+dist) {
+            //     distances[neighbour] = distances[vertex]+dist;
+            //     path[neighbour] = vertex;
+            // }
+        //  }    
+    // }
     // std::cout<<std::endl;
     // for(int i=0; i<numberOfVertices; i++) {
     //     int x = distances[i];
@@ -194,81 +201,107 @@ std::pair<std::string, int> TopologicalSortSearch::search(std::vector<int> sorte
     //  }
     //  std::cout<<std::endl;
     
-    std::string solution = "";
-    int node = sorted[0];
+    // std::string solution = "";
+    // int node = sorted[0];
     // std::cout<<node <<std::endl;
     // std::cout<<current<<std::endl;
-    while(node!=-1) {
-        solution += "->";
-        solution += std::to_string(node);
-        node = path[node];
-    }
+    // while(node!=-1) {
+    //     solution += "->";
+    //     solution += std::to_string(node);
+    //     node = path[node];
+    // }
     // std::cout<<std::endl<<' ';
-    for(int i=0; i<numberOfVertices; i++) {
-        int vertex = path[i];
+    // for(int i=0; i<numberOfVertices; i++) {
+    //     int vertex = path[i];
         // std::cout<<vertex<<' ';
        
-    }
-    return std::make_pair(solution.substr(2, solution.size()-2), distances[node]);
+    // }
+    // return std::make_pair(solution.substr(2, solution.size()-2), distances[node]);
 
-}
+// }
 
 void TopologicalSortSearch::reverse()
 {
-    std::vector<std::vector<std::pair<int, int> > > reversed; 
-    std::vector<std::pair<int, int> > vi; 
-    int numberOfVertices = graph.size();
-    reversed.insert(reversed.begin(), numberOfVertices, vi);
-    for(int i=0; i<numberOfVertices; i++) {
-        int numberOfNeighbours = graph[i].size();
-        // std::cout<<"V: "<<i << ' '<<std::endl;
+    std::map<Node, std::vector<Edge*> > reversed;
+    std::map<Node, bool> visited;
+
+    for (auto const& element : this->graph){
+        Node node = element.first;
+        std::vector<Edge*> edges = element.second;
+        std::cout<<"V: "<< node.kmer<<std::endl;
+        int numberOfNeighbours = edges.size();
+        std::cout<<"susjedi : "<<numberOfNeighbours<<std::endl;
+
+        if(!visited.count(node)) {
+            visited[node] = false;
+        }
         for(int j=0; j<numberOfNeighbours; j++) {
-            std::pair<int, int> node = graph[i][j];
-            // std::cout<<node.first << ' ';
-            int vertex = node.first;
-            int weight = node.second;
-            reversed[vertex].push_back(std::make_pair(i, weight));  
+            Edge *e = edges[j];
+            Node *n = e->endNode;
+            int weight = e->weight;
+            std::cout<<"N: "<< n->kmer<<std::endl;
+            Edge *eReversed = new Edge(e->transition);
+            eReversed->endNode = new Node(node.backboneIndex,node.kmer);
+            eReversed->weight = weight;
+
+            if(reversed.count(*n)) {
+                 reversed[*n].push_back(eReversed);
+            }
+            else {
+                std::vector<Edge*> temp;
+                temp.push_back(eReversed);
+                reversed[*n] = temp;
+            }
+            visited[*n] = true;
         }
-        // std::cout<<std::endl;
+    } 
+
+    for (auto const& element : visited){
+        Node node = element.first;
+        bool isVisited = element.second; 
+        if(!isVisited) {
+            std::vector<Edge*> temp;
+            reversed[node] = temp;
+        }
     }
-    this->graph = reversed;
+    this->graph = reversed;  
 }
 
-void TopologicalSortSearch::put(int vertex)
-{
-    if(called[vertex]) {
-          exit(-1);
-    }
-    called[vertex] = true;
-    int numberOfNeighbours = graph[vertex].size();
+// void TopologicalSortSearch::put(int vertex)
+// {
+    // if(called[vertex]) {
+    //       exit(-1);
+    // }
+    // called[vertex] = true;
+    // int numberOfNeighbours = graph[vertex].size();
 
-    // std::cout<< "V : "<< vertex <<std::endl;
+    // // std::cout<< "V : "<< vertex <<std::endl;
 
-    for(int i=0; i<numberOfNeighbours; i++) {
-        std::pair<int, int> node = graph[vertex][i];
-        int neighbour = node.first;
-        // std::cout<< "N : "<< vertex <<std::endl;
-        if(!visited[neighbour]) {
-            put(neighbour);
-        }
-    }
-    // std::cout<<std::endl;
-    // std::cout<< "A : "<< vertex <<std::endl;
-    sorted.push_back(vertex);
-    called[vertex] = false;
-    visited[vertex] = true;
+    // for(int i=0; i<numberOfNeighbours; i++) {
+    //     std::pair<int, int> node = graph[vertex][i];
+    //     int neighbour = node.first;
+    //     // std::cout<< "N : "<< vertex <<std::endl;
+    //     if(!visited[neighbour]) {
+    //         put(neighbour);
+    //     }
+    // }
+    // // std::cout<<std::endl;
+    // // std::cout<< "A : "<< vertex <<std::endl;
+    // sorted.push_back(vertex);
+    // called[vertex] = false;
+    // visited[vertex] = true;
    
-}
+// }
     
 
-std::vector<int> TopologicalSortSearch::sort()
-{
-    int numberOfVertices = graph.size();
-    for(int vertex=0; vertex<numberOfVertices; vertex++) {
-        if(!visited[vertex]){
-            put(vertex);
-        }
-    }
-    return this->sorted;
-}
+// std::vector<int> TopologicalSortSearch::sort()
+// {
+    // int numberOfVertices = graph.size();
+    // for(int vertex=0; vertex<numberOfVertices; vertex++) {
+    //     if(!visited[vertex]){
+    //         put(vertex);
+    //     }
+    // }
+    // return this->sorted;
+// }
     

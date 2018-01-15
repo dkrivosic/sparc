@@ -9,8 +9,8 @@
 class TopologicalSortSearch
 {
     public:
-        std::vector<std::vector<std::pair<int, int> > > graph;
-        TopologicalSortSearch(std::vector<std::vector<std::pair<int, int> > >);
+        std::map<Node, std::vector<Edge*> > graph;
+        TopologicalSortSearch(std::map<Node, std::vector<Edge*> >);
         std::pair<std::string, int>  run();
         static std::map<Node, std::vector<Edge*> > createGraph();
     private :

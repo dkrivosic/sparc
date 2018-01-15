@@ -1,4 +1,5 @@
 #include <iostream>
+#include <map>
 #include "Sequence.h"
 #include "backbone.h"
 #include "KmerGraph.h"
@@ -10,8 +11,8 @@ int main()
 {
     std::map<Node, std::vector<Edge*> > graph;
     graph = TopologicalSortSearch::createGraph();
-    // TopologicalSortSearch *tss = new TopologicalSortSearch(graph);
-    // std::pair<std::string, int> solution = tss->run();
+    TopologicalSortSearch *tss = new TopologicalSortSearch(graph);
+    std::pair<std::string, int> solution = tss->run();
     // std::string path = solution.first;
     // int weight = solution.second;
 
