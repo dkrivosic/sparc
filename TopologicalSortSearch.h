@@ -15,10 +15,10 @@ class TopologicalSortSearch
         static std::map<Node, std::vector<Edge*> > createGraph();
     private :
         void reverse();
-        void put(int vertex);
+        void put(Node node);
         std::pair<std::string, int> search(std::vector<int>);
-        std::vector<int> sort();
-        std::vector<int> sorted;
-        std::map <int, bool> visited;
-        std::map<int, bool> called;
+        std::vector<Node> sort();
+        std::vector<Node> sorted;
+        std::map <Node, bool> visited;
+        std::map<Node, bool> called;
 };

@@ -15,8 +15,6 @@ TopologicalSortSearch::TopologicalSortSearch(std::map<Node, std::vector<Edge*> >
 
 std::map<Node, std::vector<Edge*> > TopologicalSortSearch::createGraph()
 {
-    const int inf = -1;
-    int n = 12;
     std::vector<std::pair<int, int> > vi; 
     std::map<Node, std::vector<Edge*> > graph;
     
@@ -150,19 +148,12 @@ std::map<Node, std::vector<Edge*> > TopologicalSortSearch::createGraph()
 std::pair<std::string, int> TopologicalSortSearch::run()
 {
     reverse();
-    std::cout<<"-----------------------------------------------------"<<std::endl;
-    reverse();
-    std::cout<<"-----------------------------------------------------"<<std::endl;
-    reverse();
-    // reverse();
-    // std::vector<int> sorted = sort();
-
-    // int numberOfVertices = graph.size();
-
-    // for(int i=0; i<numberOfVertices; i++) {
-    //     int vertex = sorted[i];
-        // std::cout << vertex << ' ';
-    // }
+    std::vector<Node> sorted = sort();
+    int numberOfVertices = sorted.size();
+    for(int i=0; i<numberOfVertices; i++) {
+        Node node = sorted[i];
+        std::cout << node.kmer << ' ';
+    }
     // return search(sorted);
     return std::make_pair("aaa", 0);
 }
@@ -228,9 +219,9 @@ void TopologicalSortSearch::reverse()
     for (auto const& element : this->graph){
         Node node = element.first;
         std::vector<Edge*> edges = element.second;
-        std::cout<<"V: "<< node.kmer<<std::endl;
+        // std::cout<<"V: "<< node.kmer<<std::endl;
         int numberOfNeighbours = edges.size();
-        std::cout<<"susjedi : "<<numberOfNeighbours<<std::endl;
+        // std::cout<<"susjedi : "<<numberOfNeighbours<<std::endl;
 
         if(!visited.count(node)) {
             visited[node] = false;
@@ -239,7 +230,7 @@ void TopologicalSortSearch::reverse()
             Edge *e = edges[j];
             Node *n = e->endNode;
             int weight = e->weight;
-            std::cout<<"N: "<< n->kmer<<std::endl;
+            // std::cout<<"N: "<< n->kmer<<std::endl;
             Edge *eReversed = new Edge(e->transition);
             eReversed->endNode = new Node(node.backboneIndex,node.kmer);
             eReversed->weight = weight;
@@ -267,41 +258,48 @@ void TopologicalSortSearch::reverse()
     this->graph = reversed;  
 }
 
-// void TopologicalSortSearch::put(int vertex)
-// {
-    // if(called[vertex]) {
-    //       exit(-1);
-    // }
-    // called[vertex] = true;
-    // int numberOfNeighbours = graph[vertex].size();
+void TopologicalSortSearch::put(Node node)
+{
+    std::map<Node, bool>::iterator it;
+    it = called.find(node);
+    if(it != called.end()){
+        exit(-1);      
+    }
+    called[node] = true;
 
-    // // std::cout<< "V : "<< vertex <<std::endl;
+    std::vector<Edge*> edges = this->graph[node];
+    int numberOfNeighbours = edges.size();
 
-    // for(int i=0; i<numberOfNeighbours; i++) {
-    //     std::pair<int, int> node = graph[vertex][i];
-    //     int neighbour = node.first;
-    //     // std::cout<< "N : "<< vertex <<std::endl;
-    //     if(!visited[neighbour]) {
-    //         put(neighbour);
-    //     }
-    // }
-    // // std::cout<<std::endl;
-    // // std::cout<< "A : "<< vertex <<std::endl;
-    // sorted.push_back(vertex);
-    // called[vertex] = false;
-    // visited[vertex] = true;
+    // std::cout<< "V : "<< node.kmer <<std::endl;
+
+    for(int i=0; i<numberOfNeighbours; i++) {
+        Edge *e = edges[i];
+        Node *n = e->endNode;
+        // std::cout<<"S: "<< n->kmer<<std::endl;
+        it = visited.find(*n);
+        if (it == visited.end()){
+             put(*n);
+        }
+    }
+    // std::cout<<std::endl;
+    // std::cout<< "A : "<< vertex <<std::endl;
+    sorted.push_back(node);
+    called.erase(node);
+    visited[node] = true;
    
-// }
+}
     
 
-// std::vector<int> TopologicalSortSearch::sort()
-// {
-    // int numberOfVertices = graph.size();
-    // for(int vertex=0; vertex<numberOfVertices; vertex++) {
-    //     if(!visited[vertex]){
-    //         put(vertex);
-    //     }
-    // }
-    // return this->sorted;
-// }
+std::vector<Node> TopologicalSortSearch::sort()
+{
+    
+    for (auto const& element : this->graph){
+        Node node = element.first;
+        std::map<Node, bool>::iterator it = visited.find(node);
+        if (it == visited.end()){
+             put(node);
+        }
+    }
+    return this->sorted;
+}
     
