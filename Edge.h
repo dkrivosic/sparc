@@ -10,4 +10,5 @@ class Edge
         float weight;
         Node *endNode;
         Edge(std::string);
+        Edge(std::string, Node*);
 };
