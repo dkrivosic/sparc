@@ -7,19 +7,71 @@ TopologicalSortSearch::TopologicalSortSearch(std::vector<std::vector<std::pair<i
     this->graph = graph;
 }
 
-std::string TopologicalSortSearch::run()
+std::pair<std::string, int> TopologicalSortSearch::run()
 {
-    reverse();
+    // reverse();
     std::vector<int> sorted = sort();
 
     int numberOfVertices = graph.size();
 
     for(int i=0; i<numberOfVertices; i++) {
         int vertex = sorted[i];
-        std::cout << vertex << ' ';
+        // std::cout << vertex << ' ';
     }
+    return search(sorted);
+}
 
-    return "abcdef";
+std::pair<std::string, int> TopologicalSortSearch::search(std::vector<int> sorted) {
+    int numberOfVertices = graph.size();
+    int last = sorted[numberOfVertices-1];
+    std::vector<int> distances(numberOfVertices, -1);
+    distances[last] = 0;
+    std::vector<int> path(numberOfVertices, -1);
+
+    
+    for(int i=numberOfVertices-1; i>=0; i--) {
+        int vertex = sorted[i];
+        // cout << "start: " << x <<endl;
+        // cout << distances[x] <<endl;
+        if(distances[vertex]==-1){
+            continue;
+        }
+        for(int j=0; j<graph[vertex].size(); j++) {
+            std::pair<int, int> node = graph[vertex][j];
+            int neighbour = node.first;
+            int dist = node.second;
+            // cout << "N :" << vertex <<endl;
+            //  cout << "D:" << dist <<endl;
+            if(distances[neighbour] < distances[vertex]+dist) {
+                distances[neighbour] = distances[vertex]+dist;
+                path[neighbour] = vertex;
+            }
+         }    
+    }
+    // std::cout<<std::endl;
+    // for(int i=0; i<numberOfVertices; i++) {
+    //     int x = distances[i];
+    //     std::cout << x << ' ';
+    //  }
+    //  std::cout<<std::endl;
+    
+    std::string solution = "";
+    int node = sorted[0];
+    // std::cout<<node <<std::endl;
+    // std::cout<<current<<std::endl;
+    while(node!=-1) {
+        solution += "->";
+        solution += std::to_string(node);
+        node = path[node];
+    }
+    // std::cout<<std::endl<<' ';
+    for(int i=0; i<numberOfVertices; i++) {
+        int vertex = path[i];
+        // std::cout<<vertex<<' ';
+       
+    }
+    return std::make_pair(solution.substr(2, solution.size()-2), distances[node]);
+
 }
 
 void TopologicalSortSearch::reverse()

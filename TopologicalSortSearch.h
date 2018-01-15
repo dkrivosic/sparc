@@ -8,10 +8,11 @@ class TopologicalSortSearch
     public:
         std::vector<std::vector<std::pair<int, int> > > graph;
         TopologicalSortSearch(std::vector<std::vector<std::pair<int, int> > >);
-        std::string run();
+        std::pair<std::string, int>  run();
     private :
         void reverse();
         void put(int vertex);
+        std::pair<std::string, int> search(std::vector<int>);
         std::vector<int> sort();
         std::vector<int> sorted;
         std::map <int, bool> visited;

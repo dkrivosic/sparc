@@ -39,8 +39,14 @@ int main()
     std::vector<std::vector<std::pair<int, int> > > graph;
     graph = createGraph();
     TopologicalSortSearch *tss = new TopologicalSortSearch(graph);
-    std::string output = tss->run();
-    std::cout<<output;
+    std::pair<std::string, int> solution = tss->run();
+    std::string path = solution.first;
+    int weight = solution.second;
+
+    std::cout<<path << std::endl;
+    std::cout<<weight << std::endl;
+
+
 
 
     // std::string pathToAlignments = "consensus_input/lambda_alignments_cigar.sam"; // path to location folder of the alignments.sam file
