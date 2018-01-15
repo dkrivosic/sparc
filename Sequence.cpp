@@ -93,7 +93,7 @@ Sequence* Sequence::loadFromFile(std::string loadPath)
     std::string sequence;
     if (ifsLoadSequence.is_open())
     {
-        ifsLoadSequence >> backboneIndex >> sequenceIndex >> cigarSequence >> sequence;
+        ifsLoadSequence >> sequenceIndex >> backboneIndex >> cigarSequence >> sequence;
         ifsLoadSequence.close();
     }
     else 
