@@ -15,7 +15,7 @@ class KmerGraph
     public:
         KmerGraph(Backbone*, int, int);
         ~KmerGraph();
-        void addSequence(Sequence);
+        void addSequence(Sequence*);
         std::map<Node, std::vector<Edge*> > getGraph();
         Node *initialNode;
 
