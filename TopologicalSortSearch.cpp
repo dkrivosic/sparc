@@ -15,7 +15,6 @@ TopologicalSortSearch::TopologicalSortSearch(std::map<Node, std::vector<Edge*> >
 
 std::map<Node, std::vector<Edge*> > TopologicalSortSearch::createGraph()
 {
-    std::vector<std::pair<int, int> > vi; 
     std::map<Node, std::vector<Edge*> > graph;
     
     Node *n0 = new Node(0, "0");
@@ -145,7 +144,7 @@ std::map<Node, std::vector<Edge*> > TopologicalSortSearch::createGraph()
     
 }
 
-std::pair<std::string, int> TopologicalSortSearch::run()
+std::pair<std::string, float> TopologicalSortSearch::run()
 {
     reverse();
     std::vector<Node> sorted = sort();
@@ -158,9 +157,9 @@ std::pair<std::string, int> TopologicalSortSearch::run()
 }
 
 std::pair<std::string, int> TopologicalSortSearch::search(std::vector<Node> sorted) {
-    std::map<Node, int> distances;
+    std::map<Node, float> distances;
     std::map<Node, Node*> path;
-    std::map<Node, int>::iterator it;
+    std::map<Node, float>::iterator it;
     std::map<Node, Node*>::iterator iter;
 
     int numberOfVertices = sorted.size();
@@ -181,7 +180,7 @@ std::pair<std::string, int> TopologicalSortSearch::search(std::vector<Node> sort
         for(int j=0; j<numberOfNeighbours; j++) {
             Edge *e = edges[j];
             Node *n = e->endNode;
-            int weight = e->weight;
+            float weight = e->weight;
 
             if(distances[*n] < distances[node]+weight) {
                 distances[*n] = distances[node]+weight;
@@ -204,7 +203,7 @@ std::pair<std::string, int> TopologicalSortSearch::search(std::vector<Node> sort
     
     Node node = sorted[0];
     iter = path.find(node);
-    int distance = distances[node];
+    float distance = distances[node];
     std::string solution = node.kmer;  
     reverse();
     while(iter != path.end()) {
@@ -247,7 +246,7 @@ void TopologicalSortSearch::reverse()
         for(int j=0; j<numberOfNeighbours; j++) {
             Edge *e = edges[j];
             Node *n = e->endNode;
-            int weight = e->weight;
+            float weight = e->weight;
             // std::cout<<"N: "<< n->kmer<<std::endl;
             Edge *eReversed = new Edge(e->transition);
             eReversed->endNode = new Node(node.backboneIndex,node.kmer);
