@@ -253,11 +253,39 @@ void KmerGraph::addSequence(Sequence *s)
 
         std::string edgeString = newSequence.substr(j);
         Edge *e = new Edge(edgeString, insert->endNode);
+        edges.push_back(e);
 
         Node *n = insert->startNode;
+        int edgeIndex = 0;
         while (*n != *insert->endNode)
         {
-
+            e = edges[edgeIndex];
+            bool edgeFound = false;
+            for (Edge *graphEdge : _graph[*n])
+            {
+                if (e->transition == graphEdge->transition)
+                {
+                    graphEdge->weight += 1;
+                    edgeFound = true;
+                    n = e->endNode;
+                    break;
+                }
+            }
+            if (!edgeFound)
+            {
+                if (_graph.find(*n) != _graph.end())
+                {
+                    _graph[*n].push_back(e);
+                }
+                else
+                {
+                    std::vector<Edge*> neighbours;
+                    neighbours.push_back(e);
+                    _graph[*n] = neighbours;
+                }
+                n = e->endNode;
+            }
+            edgeIndex++;
         }
     }
 
