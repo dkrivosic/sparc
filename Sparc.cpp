@@ -2,6 +2,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <string>
+#include <fstream>
 #include "Sequence.h"
 #include "backbone.h"
 #include "KmerGraph.h"
@@ -45,7 +46,12 @@ int main()
     std::string path = solution.first;
     float weight = solution.second;
 
-    std::cout<<path << std::endl;
-    std::cout<<weight << std::endl;
+    std::ofstream outputFile;
+    outputFile.open ("consensus_input/lambda_results.fasta");
+    outputFile << "<"<<std::to_string(weight)<<"\n";
+    outputFile << path;
+    outputFile.close();
+    return 0;
+
     return 0;
 }
