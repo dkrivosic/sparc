@@ -13,11 +13,11 @@ int main()
     graph = TopologicalSortSearch::createGraph();
     TopologicalSortSearch *tss = new TopologicalSortSearch(graph);
     std::pair<std::string, int> solution = tss->run();
-    // std::string path = solution.first;
-    // int weight = solution.second;
+    std::string path = solution.first;
+    int weight = solution.second;
 
-    // std::cout<<path << std::endl;
-    // std::cout<<weight << std::endl;
+    std::cout<<path << std::endl;
+    std::cout<<weight << std::endl;
 
     // Backbone* bb = Backbone::createFromFile("consensus_input/lambda_layout.fasta"); 
     // KmerGraph *graph = new KmerGraph(bb, 2, 3); 

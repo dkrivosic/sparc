@@ -159,8 +159,9 @@ std::pair<std::string, int> TopologicalSortSearch::run()
 
 std::pair<std::string, int> TopologicalSortSearch::search(std::vector<Node> sorted) {
     std::map<Node, int> distances;
-    std::map<Node, Node> path;
+    std::map<Node, Node*> path;
     std::map<Node, int>::iterator it;
+    std::map<Node, Node*>::iterator iter;
 
     int numberOfVertices = sorted.size();
     Node last = sorted[numberOfVertices-1];
@@ -184,36 +185,39 @@ std::pair<std::string, int> TopologicalSortSearch::search(std::vector<Node> sort
 
             if(distances[*n] < distances[node]+weight) {
                 distances[*n] = distances[node]+weight;
-                // path[neighbour] = vertex;
+                path[*n] = new Node(node.backboneIndex, node.kmer);
             }
          }    
     }
-    std::cout<<std::endl;
-    for (auto const& element : distances){
-        Node node = element.first;
-        int distance = element.second;
-        std::cout<<node.kmer<<" : "<<distance<<std::endl;
-    }
-    std::cout<<std::endl;
+    // std::cout<<std::endl;
+    // for (auto const& element : distances){
+    //     Node node = element.first;
+    //     int distance = element.second;
+    //     std::cout<<node.kmer<<" : "<<distance<<std::endl;
+    // }
+    // std::cout<<std::endl;
+    //  for (auto const& element : path){
+    //     Node key = element.first;
+    //     Node *value = element.second;
+    //     std::cout<<key.kmer<<" : "<<value->kmer<<std::endl;
+    // }
     
-    // std::string solution = "";
-    // int node = sorted[0];
-    // std::cout<<node <<std::endl;
-    // std::cout<<current<<std::endl;
-    // while(node!=-1) {
-    //     solution += "->";
-    //     solution += std::to_string(node);
-    //     node = path[node];
-    // }
-    // std::cout<<std::endl<<' ';
-    // for(int i=0; i<numberOfVertices; i++) {
-    //     int vertex = path[i];
-        // std::cout<<vertex<<' ';
+    std::string solution = "";
+    Node node = sorted[0];
+    iter = path.find(node);
+    int distance = distances[node];
        
-    // }
-    // return std::make_pair(solution.substr(2, solution.size()-2), distances[node]);
-    std::string qw = ".....";
-    return std::make_pair(qw, 1);
+    while(iter != path.end()) {
+        solution += "->";
+        solution += node.kmer;
+        node = *path[node];
+        iter = path.find(node);
+    }
+    solution += "->";
+    solution += node.kmer;
+    return std::make_pair(solution.substr(2, solution.size()-2), distance);
+    // std::string a= "10";
+    // return std::make_pair(a,1);
 
 }
 
