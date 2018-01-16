@@ -8,9 +8,10 @@
 #include <vector>
 
 
-TopologicalSortSearch::TopologicalSortSearch(std::map<Node, std::vector<Edge*> > graph)
+TopologicalSortSearch::TopologicalSortSearch(KmerGraph *graph)
 {
-    this->graph = graph;
+    this->graph = graph->getGraph();
+    this->initial = graph->initialNode;
 }
 
 std::map<Node, std::vector<Edge*> > TopologicalSortSearch::createGraph()
@@ -156,7 +157,7 @@ std::pair<std::string, float> TopologicalSortSearch::run()
     return search(sorted);
 }
 
-std::pair<std::string, int> TopologicalSortSearch::search(std::vector<Node> sorted) {
+std::pair<std::string, float> TopologicalSortSearch::search(std::vector<Node> sorted) {
     std::map<Node, float> distances;
     std::map<Node, Node*> path;
     std::map<Node, float>::iterator it;
@@ -201,7 +202,7 @@ std::pair<std::string, int> TopologicalSortSearch::search(std::vector<Node> sort
     //     std::cout<<key.kmer<<" : "<<value->kmer<<std::endl;
     // }
     
-    Node node = sorted[0];
+    Node node = *this->initial;
     iter = path.find(node);
     float distance = distances[node];
     std::string solution = node.kmer;  
