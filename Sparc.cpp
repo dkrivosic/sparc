@@ -1,4 +1,7 @@
 #include <iostream>
+#include <sys/types.h>
+#include <dirent.h>
+#include <string>
 #include "Sequence.h"
 #include "backbone.h"
 #include "KmerGraph.h"
@@ -16,9 +19,26 @@ int main()
     Backbone* bb = Backbone::createFromFile("consensus_input/lambda_layout.fasta");
     KmerGraph *graph = new KmerGraph(bb, 2, 3);
 
-    Sequence *sequence = Sequence::loadFromFile("sequence_alignments/5.txt");
+    std::string folder = "sequence_alignments";
     
-    graph->addSequence(sequence);
+    int count = 0;
+    DIR* dirp = opendir(folder.c_str());
+    struct dirent * dp;
+    while ((dp = readdir(dirp)) != NULL) 
+    {
+        std::string f = folder + "/" + (dp->d_name);
+        std::cout << "File: " << f << "\n" << std::endl;
+        if(f.substr(f.length() - 3) == "txt")
+        {
+            Sequence *sequence = Sequence::loadFromFile(f);
+            graph->addSequence(sequence);    
+            count++;
+   
+        }
+    }
+    closedir(dirp);
+
+    std::cout << "\nNumber of files read: " << count << "\n" << std::endl;
 
     TopologicalSortSearch *tss = new TopologicalSortSearch(graph->getGraph());
     std::pair<std::string, int> solution = tss->run();

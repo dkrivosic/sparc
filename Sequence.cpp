@@ -60,7 +60,12 @@ void Sequence::extractSequences(std::string pathToAlignments)
             backboneIndexInt = stoi(results[3]);
             cigarSequence = results[5];
             sequence = results[9];
-            Sequence::saveToFile(saveDirectory, sequenceIndexInt, backboneIndexInt,cigarSequence, sequence);
+            
+            if(backboneIndexInt != 0)
+            {
+                Sequence::saveToFile(saveDirectory, sequenceIndexInt, backboneIndexInt,cigarSequence, sequence);
+            }
+            
             iss.clear();
         }
     }
