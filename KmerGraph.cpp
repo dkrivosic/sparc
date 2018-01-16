@@ -229,16 +229,11 @@ void KmerGraph::addSequence(Sequence *s)
         n = endNode;
     }
 
-    std::cout << this->backbone->value.substr(s->getBackboneIndex() - 1).substr(100, 50) << std::endl;
-    std::cout << result.substr(100, 50) << std::endl; 
-    std::cout << cigar.substr(100, 50) << std::endl;
-
     // Do inserts
     for (Insert* insert : inserts)
     {
         std::vector<Edge*> edges;
         std::string newSequence = insert->graphString.substr(0, insert->index) + insert->insertString + insert->graphString.substr(insert->index);
-        // std::cout << insert->startNode->backboneIndex << " " << insert->startNode->kmer << " " << newSequence << " " << insert->endNode->kmer << " " << insert->insertString << std::endl;
         int edgesCount = newSequence.length() / g;
         int j = 0;
         for (int i = 0; i < edgesCount; i++)
