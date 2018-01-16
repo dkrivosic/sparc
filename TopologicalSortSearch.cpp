@@ -202,23 +202,31 @@ std::pair<std::string, int> TopologicalSortSearch::search(std::vector<Node> sort
     //     std::cout<<key.kmer<<" : "<<value->kmer<<std::endl;
     // }
     
-    std::string solution = "";
     Node node = sorted[0];
     iter = path.find(node);
     int distance = distances[node];
-       
+    std::string solution = node.kmer;  
+    reverse();
     while(iter != path.end()) {
-        solution += "->";
-        solution += node.kmer;
-        node = *path[node];
+        std::vector<Edge*> edges = this->graph[node];
+        int numberOfNeighbours = edges.size();
+        // std::cout<<"vertex :"<<node.kmer<<std::endl;
+        // std::cout<<"susjedi : "<<numberOfNeighbours<<std::endl;
+
+        for(int i=0; i<numberOfNeighbours; i++) {
+            Edge *e = edges[i];
+            Node *n = e->endNode;
+            // std::cout<<"neigh :"<<n->kmer<<std::endl;
+
+            if(*n==*path[node]){
+                solution+=e->transition;
+                break;
+            }
+        }
+        node=*path[node]; 
         iter = path.find(node);
     }
-    solution += "->";
-    solution += node.kmer;
-    return std::make_pair(solution.substr(2, solution.size()-2), distance);
-    // std::string a= "10";
-    // return std::make_pair(a,1);
-
+    return std::make_pair(solution, distance);
 }
 
 void TopologicalSortSearch::reverse()
