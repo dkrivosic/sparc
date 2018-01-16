@@ -243,6 +243,11 @@ void KmerGraph::addSequence(Sequence *s)
         int j = 0;
         for (int i = 0; i < edgesCount; i++)
         {
+            if (j >= newSequence.length())
+            {
+                j -=g;
+                break;
+            }
             // TODO: dodaj string ID-jeve
             std::string nodeKmer = newSequence.substr(j + g - k, k);
             std::string edgeString = newSequence.substr(j, g);
@@ -252,7 +257,12 @@ void KmerGraph::addSequence(Sequence *s)
             j += g;
         }
 
-        edges[edges.size() - 1]->endNode = insert->endNode;
+        if (j < newSequence.length())
+        {
+            std::string edgeString = newSequence.substr(j);
+            Edge *e = new Edge(edgeString, insert->endNode);
+        }
+
         // TODO: ubaci u graf
     }
 
