@@ -26,5 +26,10 @@ bool Node::operator!=(const Node& n) const
 
 bool Node::operator<(const Node& n) const
 {
+    if (this->backboneIndex == n.backboneIndex)
+    {
+        return this->insertString < n.insertString;
+    }
+    
     return this->backboneIndex < n.backboneIndex;
 }
