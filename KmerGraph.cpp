@@ -2,6 +2,7 @@
 #include "Node.h"
 #include "Edge.h"
 #include "backbone.h"
+#include "Insert.h"
 #include <string>
 #include <map>
 #include <vector>
@@ -14,12 +15,40 @@ KmerGraph::KmerGraph(Backbone *backbone, int k, int g)
     this->k = k;
     this->g = g;
     this->initialNode = nullptr;
+    this->backbone = backbone;
     initializeGraph(backbone->value);
 }
 
 KmerGraph::~KmerGraph()
 {
 
+}
+
+int KmerGraph::firstNodeBefore(int index)
+{
+    index -= k;
+    while (index >= 0)
+    {
+        if (index % this->g == 0)
+        {
+            return index;
+        }
+        index--;
+    }
+    return -1;
+}
+
+int KmerGraph::firstNodeAfter(int index)
+{
+    while (index < this->backbone->value.length())
+    {
+        if (index % this->g == 0)
+        {
+            return index;
+        }
+        index++;
+    }
+    return -1;
 }
 
 void KmerGraph::initializeGraph(std::string backbone)
@@ -78,6 +107,8 @@ void KmerGraph::addSequence(Sequence *s)
     std::string result = "";
     std::string cigar = "";
 
+    std::set<Insert*> inserts;
+
     for (int i = 0; i < cigar_sequence.length(); i++)
     {
         bool isSymbol = false;
@@ -95,40 +126,62 @@ void KmerGraph::addSequence(Sequence *s)
             cigarIndex = i + 1;
             
             // Do action
-            for (int j = 0; j < number; j++)
+            if (action == 'D')
             {
-                if (action == 'D')
+                for (int j = 0; j < number; j++)
                 {
                     result += "-";
                     cigar += action;
+                    backboneIndex++;
                 }
-                else if (action == '=' || action == 'X' || action == 'M')
+            }
+            else if (action == '=' || action == 'X' || action == 'M')
+            {
+                for (int j = 0; j < number; j++)
                 {
                     result += sequence[seqIndex];
                     cigar += action;
                     seqIndex++;
+                    backboneIndex++;
                 }
-                else if (action == 'I')
+            }
+            else if (action == 'I')
+            {
+                std::string insertString = sequence.substr(seqIndex, number);
+                int startNodeIndex = firstNodeBefore(backboneIndex);
+                int endNodeIndex = firstNodeAfter(backboneIndex);
+                
+                if (startNodeIndex > -1 && endNodeIndex > -1)
                 {
-                    seqIndex++;
+                    std::string startNodeKmer = this->backbone->value.substr(startNodeIndex, k);
+                    Node *startNode = new Node(startNodeIndex, startNodeKmer);
+                    std::string endNodeKmer = this->backbone->value.substr(endNodeIndex, k);
+                    Node *endNode = new Node(endNodeIndex, endNodeKmer);
+                    std::string graphString = this->backbone->value.substr(startNodeIndex + k, endNodeIndex - startNodeIndex - k);
+                    int insertIndex = backboneIndex - startNodeIndex - k;
+                    Insert *insert = new Insert(startNode, endNode, graphString, insertString, insertIndex);
+                    inserts.insert(insert);
                 }
-                else if (action == 'S' || action == 'H')
-                {
-                    seqIndex++;
-                }
+                seqIndex += number;
+
+            }
+            else if (action == 'S' || action == 'H')
+            {
+                seqIndex += number;
+                backboneIndex += number;
             }
         }
     }
 
     // Find index of the first node after backbone index
     int i = 0;
-    while ((backboneIndex + i) % g != 0) i++;
+    while ((s->getBackboneIndex() + i) % g != 0) i++;
 
     // Find first common node between backbone and sequence
     Node *n = nullptr;
     while (true)
     {
-        Node *tmp = new Node(backboneIndex + i, sequence.substr(i, k));
+        Node *tmp = new Node(s->getBackboneIndex() + i, sequence.substr(i, k));
         if (_graph.find(*tmp) != _graph.end())
         {
             n = tmp;
@@ -147,7 +200,7 @@ void KmerGraph::addSequence(Sequence *s)
         i += (g - k);
         if (i >= len) break;
         std::string kmer = sequence.substr(i, k);
-        Node *endNode = new Node(backboneIndex + i, kmer);
+        Node *endNode = new Node(s->getBackboneIndex() + i, kmer);
         e = new Edge(transition, endNode);
 
         if (_graph.find(*n) != _graph.end())
@@ -176,7 +229,31 @@ void KmerGraph::addSequence(Sequence *s)
         n = endNode;
     }
 
-    std::cout << result.substr(0, 100) << std::endl; 
-    std::cout << cigar.substr(0, 100) << std::endl;
+    std::cout << this->backbone->value.substr(s->getBackboneIndex() - 1).substr(100, 50) << std::endl;
+    std::cout << result.substr(100, 50) << std::endl; 
+    std::cout << cigar.substr(100, 50) << std::endl;
+
+    // Do inserts
+    for (Insert* insert : inserts)
+    {
+        std::vector<Edge*> edges;
+        std::string newSequence = insert->graphString.substr(0, insert->index) + insert->insertString + insert->graphString.substr(insert->index);
+        std::cout << insert->startNode->backboneIndex << " " << insert->startNode->kmer << " " << newSequence << " " << insert->endNode->kmer << " " << insert->insertString << std::endl;
+        int edgesCount = newSequence.length() % g + 1;
+        int j = 0;
+        for (int i = 0; i < edgesCount; i++)
+        {
+            // TODO: dodaj string ID-jeve
+            std::string nodeKmer = newSequence.substr(j + g - k, k);
+            std::string edgeString = newSequence.substr(j, g);
+            Node *n = new Node(-1, nodeKmer);
+            Edge *e = new Edge(edgeString, n);
+            edges.push_back(e);
+            j += g;
+        }
+
+        edges[edges.size() - 1]->endNode = insert->endNode;
+        // TODO: ubaci u graf
+    }
 
 }
