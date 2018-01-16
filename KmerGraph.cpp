@@ -238,32 +238,27 @@ void KmerGraph::addSequence(Sequence *s)
     {
         std::vector<Edge*> edges;
         std::string newSequence = insert->graphString.substr(0, insert->index) + insert->insertString + insert->graphString.substr(insert->index);
-        std::cout << insert->startNode->backboneIndex << " " << insert->startNode->kmer << " " << newSequence << " " << insert->endNode->kmer << " " << insert->insertString << std::endl;
-        int edgesCount = newSequence.length() % g + 1;
+        // std::cout << insert->startNode->backboneIndex << " " << insert->startNode->kmer << " " << newSequence << " " << insert->endNode->kmer << " " << insert->insertString << std::endl;
+        int edgesCount = newSequence.length() / g;
         int j = 0;
         for (int i = 0; i < edgesCount; i++)
         {
-            if (j >= newSequence.length())
-            {
-                j -=g;
-                break;
-            }
-            // TODO: dodaj string ID-jeve
             std::string nodeKmer = newSequence.substr(j + g - k, k);
             std::string edgeString = newSequence.substr(j, g);
-            Node *n = new Node(-1, nodeKmer);
+            Node *n = new Node(insert->startNode->backboneIndex, nodeKmer, newSequence.substr(0, j + g));
             Edge *e = new Edge(edgeString, n);
             edges.push_back(e);
             j += g;
         }
 
-        if (j < newSequence.length())
-        {
-            std::string edgeString = newSequence.substr(j);
-            Edge *e = new Edge(edgeString, insert->endNode);
-        }
+        std::string edgeString = newSequence.substr(j);
+        Edge *e = new Edge(edgeString, insert->endNode);
 
-        // TODO: ubaci u graf
+        Node *n = insert->startNode;
+        while (*n != *insert->endNode)
+        {
+
+        }
     }
 
 }
