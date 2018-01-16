@@ -1,3 +1,4 @@
+#pragma once
 #include "Sequence.h"
 #include "backbone.h"
 #include "Node.h"
