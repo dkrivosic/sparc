@@ -43,7 +43,7 @@ int main()
     TopologicalSortSearch *tss = new TopologicalSortSearch(graph->getGraph());
     std::pair<std::string, int> solution = tss->run();
     std::string path = solution.first;
-    int weight = solution.second;
+    float weight = solution.second;
 
     std::cout<<path << std::endl;
     std::cout<<weight << std::endl;
