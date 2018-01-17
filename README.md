@@ -4,19 +4,19 @@ The algorithm developed for Bioinformatics class based on:
 
 ## Running
 
-### Get the code
+### 1. Get the code
 ```
 Clone this repository
 cd sparc
 ```
 
-### Download the data and install graphmap
+### 2. Download the data and install graphmap
 ```
 chmod +x ./prepare_data.sh
 ./prepare_data.sh
 ```
 
-### Run the algorithm
+### 3. Run the algorithm
 ```
 chmod +x ./run.sh
 ./run.sh
