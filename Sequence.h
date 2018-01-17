@@ -8,9 +8,10 @@ class Sequence
         int sequenceIndex;
         std::string cigar_sequence;
         std::string sequence;
-        Sequence(int, int, std::string, std::string);
 
     public:
+        Sequence(int, int, std::string, std::string);
+
         static void extractSequences(std::string);
  
         int getBackboneIndex()          {return backboneIndex;}

@@ -15,69 +15,72 @@ Sequence::Sequence(int bIndex, int seqIndex, std::string cigar_seq, std::string 
     sequence = seq;
 }
 
-void Sequence::extractSequences(std::string pathToAlignments)
-{
+// void Sequence::extractSequences(std::string pathToAlignments)
+// {
 
-    std::string saveDirectory = "sequence_alignments";
+//     std::string saveDirectory = "sequence_alignments";
 
-    const int dir_err = system("mkdir -p sequence_alignments");
-    if (-1 == dir_err)
-    {
-        printf("Error creating directory!n");
-        exit(1);
-    }
+//     const int dir_err = system("mkdir -p sequence_alignments");
+//     if (-1 == dir_err)
+//     {
+//         printf("Error creating directory!n");
+//         exit(1);
+//     }
     
-    std::cout << "Saving reads to folder: '" + saveDirectory + "'"<< std::endl;
+//     std::cout << "Saving reads to folder: '" + saveDirectory + "'"<< std::endl;
 
-    // open alignments SAM file created GraphMap with CIGAR syntax
-    std::string line;
-    std::ifstream alignmentsFile(pathToAlignments);
+//     // open alignments SAM file created GraphMap with CIGAR syntax
+//     std::string line;
+//     std::ifstream alignmentsFile(pathToAlignments);
 
-    if (alignmentsFile.is_open())
-    {
-        std::istringstream iss;
-        std::stringstream ss;
-        int a;
-        std::string b;
-        int backboneIndexInt;
-        int sequenceIndexInt;
-        std::string cigarSequence;
-        std::string sequence;
+//     if (alignmentsFile.is_open())
+//     {
+//         std::istringstream iss;
+//         std::stringstream ss;
+//         int a;
+//         std::string b;
+//         int backboneIndexInt;
+//         int sequenceIndexInt;
+//         std::string cigarSequence;
+//         std::string sequence;
 
-        for(int i = 0; i < 3; i++)
-        {
-            getline(alignmentsFile, line);
-        }
+//         for(int i = 0; i < 3; i++)
+//         {
+//             getline(alignmentsFile, line);
+//         }
 
-        while(getline(alignmentsFile, line))
-        {
-            // getline(alignmentsFile, line);
-            iss.str(line);
-            std::vector<std::string> results(std::istream_iterator<std::string>{iss},
-                                 std::istream_iterator<std::string>());
+//         while(getline(alignmentsFile, line))
+//         {
+//             // getline(alignmentsFile, line);
+//             iss.str(line);
+//             std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+//                                  std::istream_iterator<std::string>());
 
-            sequenceIndexInt = stoi(results[0]);
-            backboneIndexInt = stoi(results[3]);
-            cigarSequence = results[5];
-            sequence = results[9];
+//             sequenceIndexInt = stoi(results[0]);
+//             backboneIndexInt = stoi(results[3]);
+//             cigarSequence = results[5];
+//             sequence = results[9];
             
-            if(backboneIndexInt != 0)
-            {
-                Sequence::saveToFile(saveDirectory, sequenceIndexInt, backboneIndexInt,cigarSequence, sequence);
-            }
+//             if(backboneIndexInt != 0)
+//             {
+//                 Sequence *seq = new Sequence(sequenceIndexInt, backboneIndexInt,cigarSequence, sequence);
+//                 graph->addSequence(sequence);    
+//                 count++;
+//                 // Sequence::saveToFile(saveDirectory, sequenceIndexInt, backboneIndexInt,cigarSequence, sequence);
+//             }
             
-            iss.clear();
-        }
-    }
-    else
-    {
-        std::cout << "File is not opened. Exiting...";
-        exit(1);
-    }
+//             iss.clear();
+//         }
+//     }
+//     else
+//     {
+//         std::cout << "File is not opened. Exiting...";
+//         exit(1);
+//     }
     
-    // close alignments file
-    alignmentsFile.close();
-}
+//     // close alignments file
+//     alignmentsFile.close();
+// }
 
 void Sequence::saveToFile(std::string saveLocation, int sequenceIndexInt, int backboneIndexInt,std::string cigarSequence, std::string sequence)
 {
