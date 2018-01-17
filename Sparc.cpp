@@ -13,27 +13,27 @@
 #include "Edge.h"
 #include "TopologicalSortSearch.h"
 
-// std::map<Node, std::vector<Edge*> > graphBFS;
-// std::map<Node, std::vector<Edge*> > graphCalc;
 
-// void bfs(Node node) {
-//     std::vector<Edge*> edges = graphCalc[node].
-
-// }
-
-int main()
+int main(int argc, char** argv)
 {
+    if(argc < 4)
+    {
+        std::cout << "Not enough arguments provided..." << std::endl << "Arguments should be: [layout_file] [alignments file] [results_file]" << std::endl;
+        exit(-1);
+    }
 
-    Backbone* bb = Backbone::createFromFile("consensus_input/lambda_layout.fasta");
+    std::string layout_file = argv[1];
+    std::string alignments_file = argv[2];
+    std::string results_file = argv[3];
+
+    std::cout << "\nLoading backbone and creating initial graph..." << std::endl;
+    Backbone* bb = Backbone::createFromFile(layout_file);
     KmerGraph *graph = new KmerGraph(bb, 2, 3);
 
-    std::string pathToAlignments = "consensus_input/lambda_alignments_cigar.sam"; // path to location folder of the alignments.sam file
-    std::cout << "Extracting sequences started from file: '" + pathToAlignments + "'"<< std::endl;
-
-    // 
+    std::cout << "\nExtracting sequences from file: '" + alignments_file + "'"<< " and adding them to the graph...\n" << std::endl;
 
     std::string line;
-    std::ifstream alignmentsFile(pathToAlignments);
+    std::ifstream alignmentsFile(alignments_file);
 
     if (alignmentsFile.is_open())
     {
@@ -63,7 +63,7 @@ int main()
             
             if(sequenceIndexInt % 100 == 0)
             {
-                std::cout << "Progress: " << count << std::endl; 
+                std::cout << "Number of processed files: " << count << std::endl; 
             }
 
             if(backboneIndexInt != 0)
@@ -85,21 +85,20 @@ int main()
     
     // close alignments file
     alignmentsFile.close();
+    std::cout << "\nGraph created!" << std::endl;
 
-    // 
-
+    std::cout << "\nFinding the best path in graph..." << std::endl;
     TopologicalSortSearch *tss = new TopologicalSortSearch(graph);
     std::pair<std::string, int> solution = tss->run();
     std::string path = solution.first;
     float weight = solution.second;
-    // std::cout << path << std::endl;
 
+    std::cout << "\nSaving results to file..." << std::endl;
     std::ofstream outputFile;
-    outputFile.open ("consensus_input/lambda_results.fasta");
+    outputFile.open (results_file);
     outputFile << ">"<<std::to_string(weight)<<"\n";
     outputFile << path;
+    std::cout << "\nSaved!" << std::endl;
     outputFile.close();
     return 0;
-// 
-    // return 0;
 }
