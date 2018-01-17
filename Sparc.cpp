@@ -56,7 +56,7 @@ int main()
 
     std::ofstream outputFile;
     outputFile.open ("consensus_input/lambda_results.fasta");
-    outputFile << "<"<<std::to_string(weight)<<"\n";
+    outputFile << ">"<<std::to_string(weight)<<"\n";
     outputFile << path;
     outputFile.close();
     return 0;
