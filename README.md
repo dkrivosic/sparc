@@ -28,3 +28,5 @@ chmod +x ./run.sh lambda 1
 chmod +x ./run.sh ecoli 1
 ./run.sh
 ```
+
+The second argument for run.sh script is number of iterations.
