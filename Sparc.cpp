@@ -26,11 +26,11 @@ int main(int argc, char** argv)
     std::string alignments_file = argv[2];
     std::string results_file = argv[3];
 
-    std::cout << "\nLoading backbone and creating initial graph..." << std::endl;
+    std::cout << "Loading backbone and creating initial graph..." << std::endl;
     Backbone* bb = Backbone::createFromFile(layout_file);
     KmerGraph *graph = new KmerGraph(bb, 2, 3);
 
-    std::cout << "\nExtracting sequences from file: '" + alignments_file + "'"<< " and adding them to the graph...\n" << std::endl;
+    std::cout << "Extracting sequences from file: '" + alignments_file + "'"<< " and adding them to the graph..." << std::endl;
 
     std::string line;
     std::ifstream alignmentsFile(alignments_file);
@@ -85,20 +85,20 @@ int main(int argc, char** argv)
     
     // close alignments file
     alignmentsFile.close();
-    std::cout << "\nGraph created!" << std::endl;
+    std::cout << "Graph created!" << std::endl;
 
-    std::cout << "\nFinding the best path in graph..." << std::endl;
+    std::cout << "Finding the best path in graph..." << std::endl;
     TopologicalSortSearch *tss = new TopologicalSortSearch(graph);
     std::pair<std::string, int> solution = tss->run();
     std::string path = solution.first;
     float weight = solution.second;
 
-    std::cout << "\nSaving results to file..." << std::endl;
+    std::cout << "Saving results to file..." << std::endl;
     std::ofstream outputFile;
     outputFile.open (results_file);
     outputFile << ">"<<std::to_string(weight)<<"\n";
     outputFile << path;
-    std::cout << "\nSaved!" << std::endl;
+    std::cout << "Saved!" << std::endl;
     outputFile.close();
     return 0;
 }
