@@ -236,6 +236,7 @@ void KmerGraph::addSequence(Sequence *s)
         std::string newSequence = insert->graphString.substr(0, insert->index) + insert->insertString + insert->graphString.substr(insert->index);
         int edgesCount = newSequence.length() / g;
         int j = 0;
+        // Create nodes and all edges except the last one
         for (int i = 0; i < edgesCount; i++)
         {
             std::string nodeKmer = newSequence.substr(j + g - k, k);
@@ -245,11 +246,12 @@ void KmerGraph::addSequence(Sequence *s)
             edges.push_back(e);
             j += g;
         }
-
-        std::string edgeString = newSequence.substr(j);
+        // Create last edge
+        std::string edgeString = newSequence.substr(j) + insert->endNode->kmer;
         Edge *e = new Edge(edgeString, insert->endNode);
         edges.push_back(e);
 
+        // Insert created subgraph into the original graph
         Node *n = insert->startNode;
         int edgeIndex = 0;
         while (*n != *insert->endNode)
