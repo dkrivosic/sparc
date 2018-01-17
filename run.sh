@@ -14,7 +14,7 @@ for (( i=1; i<=$2; i++))
 	do
         echo "\nIteration $i"
         echo "Aligning reads to the layout."
-        /Users/domagoj/Downloads/graphmap/bin/mac/graphmap align -r $layout_file -d $reads_file -o $alignments_file --extcigar &> /dev/null
+        graphmap/bin/mac/graphmap align -r $layout_file -d $reads_file -o $alignments_file --extcigar &> /dev/null
         echo "Reads aligned."
 		./main $layout_file $alignments_file $result_file
         layout_file=$result_file
