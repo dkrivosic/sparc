@@ -17,7 +17,14 @@ chmod +x ./prepare_data.sh
 ```
 
 ### 3. Run the algorithm
+#### 3.a lambda
 ```
-chmod +x ./run.sh
+chmod +x ./run.sh lambda 1
+./run.sh
+```
+
+#### 3.b ecoli
+```
+chmod +x ./run.sh ecoli 1
 ./run.sh
 ```
